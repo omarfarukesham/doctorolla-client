@@ -9,6 +9,7 @@ import Navbar from './Pages/Navbar';
 import NotFound from './Pages/NotFound';
 import Review from './Pages/Review';
 import Login from './Pages/Security/Login';
+import SignUp from './Shared/SingUp';
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path='/About' element={<About></About>}></Route>
         <Route path='/contact' element={<Contact></Contact>}></Route>
         <Route path='/login' element={<Login></Login>}></Route>
+        <Route path='/signup' element={<SignUp></SignUp>}></Route>
         <Route path='/Footer' element={<Footer></Footer>}></Route>
 
         <Route path='*' element={<NotFound></NotFound>}></Route>
