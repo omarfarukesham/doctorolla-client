@@ -1,17 +1,28 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
+import auth from '../../firebase.init';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast } from 'react-toastify';
 
 const BookingModal = ({ date, treatment, setTreatment }) => {
     const [bookings, setBooking] = useState([])
     const { _id, name, slots } = treatment;
+    const [user, loading, error] = useAuthState(auth);
+    const formateDate = format(date, 'PP')
 
+
+    //sending data to rest api  start here.....................................
+   
     const handleBooking = event => {
         event.preventDefault();
         const slot = event.target.slot.value
-        const name = event.target.name.value;
-        const email = event.target.email.value;
+        const tretmentId = _id
+        const treatment = name
+        const date = formateDate
+        const patient = user.displayName
+        const email = user.email
         const phone = event.target.phone.value;
-        const info = { slot, name, email, phone }
+        const info = { tretmentId, treatment, date, slot, patient, email, phone }
         console.log(info)
         fetch('http://localhost:5000/appointment', {
             method: 'POST',
@@ -22,13 +33,19 @@ const BookingModal = ({ date, treatment, setTreatment }) => {
 
         })
             .then(res => res.json())
-            .then(result => {
-                const newUser = [...bookings, result]
-                setBooking(newUser)
-                alert('data insert successfully')
-                setTreatment(null);
+            .then(data => {
+                // const newUser = [...bookings, result]
+                // setBooking(newUser)
+               if(data.success){
+                   toast(`Your appointment has final on , ${formateDate}, slots ${slot}`)
+                  
+               }else{
+                   toast(`Sorry have an existing slot on that Day on ${formateDate} .....`)
+              
+               }
+               setTreatment(null);
             })
-
+ //sending data to rest api  END here.....................................
 
     }
 
@@ -47,8 +64,8 @@ const BookingModal = ({ date, treatment, setTreatment }) => {
                                 slots.map(slot => <option key={slot._id} value={slot}>{slot}</option>)
                             }
                         </select>
-                        <input type="text" name="name" placeholder="Your Name" className="input input-bordered w-full max-w-xs" />
-                        <input type="email" name="email" placeholder="Email Address" className="input input-bordered w-full max-w-xs" />
+                        <input type="text" name="name" value={user?.displayName} disabled className="input input-bordered w-full max-w-xs" />
+                        <input type="email" name="email" value={user?.email} disabled className="input input-bordered w-full max-w-xs" />
                         <input type="text" name="phone" placeholder="Phone Number" className="input input-bordered w-full max-w-xs" />
                         <input type="submit" value="Submit" className="btn btn-secondary w-full max-w-xs" />
                     </form>

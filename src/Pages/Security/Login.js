@@ -3,17 +3,22 @@ import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-fireba
 import auth from '../../firebase.init'
 import { useForm } from "react-hook-form";
 import Loading from '../../Shared/Loading';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const [signInWithGoogle, gUser, gLoading, gError] = useSignInWithGoogle(auth);
     const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
     let navigate = useNavigate()
+    const location = useLocation()
+    const from = location?.state?.from?.pathname || '/'
+
+
     //showing message ui .................................. 
     let signInError;
     if(error || gError){
-        signInError = <p className='text-red-500'>{error.message}</p>
+        signInError = <p className='text-red-500'>{error?.message}</p>
     }
 
     //application loading component here ..........................
@@ -21,11 +26,19 @@ const Login = () => {
         return <Loading></Loading>
     }
 
+    //user redirect when user is login..................................
+    if(user || gUser){
+        navigate(from, {replace: true})
+    }
+    
     //google auth hooks singIn code here..........................
     const onSubmit = (data) => {
-        signInWithEmailAndPassword(data.email, data.password);
-        navigate('/appointment')
+
+        signInWithEmailAndPassword(data?.email, data?.password);
+        // navigate(from, {replace: true})
+        
     }
+
 
     //Tailwind css, daisy ui, and react form design code ..................
     return (
@@ -53,6 +66,7 @@ const Login = () => {
                                         }
                                     })}
                                     placeholder="Your Email"
+                                    name="email"                                  
                                     className="input input-bordered w-full max-w-xs"
                                 />
                                 <label className="label">
@@ -81,6 +95,7 @@ const Login = () => {
                                         }
                                     })}
                                     placeholder="Your password"
+
                                     className="input input-bordered w-full max-w-xs"
                                 />
                                 <label className="label">
@@ -89,11 +104,13 @@ const Login = () => {
                                 </label>
 
                             </div>
-                                    {signInError}
+                            {signInError}
+
+
                             <input type="submit" className='btn btn-outline w-full mx-w-xs' />
-
+                           
                         </form>
-
+                        Forget Password ? <Link  to="/ResetPass" className="btn btn-link ">Reset Password</Link>
                         <p><small>Are you a New User ?  <Link to='/signup' className="text-secondary text-bold ">New User</Link></small></p>
 
                     </div>
@@ -104,6 +121,7 @@ const Login = () => {
                   
                 </div>
             </div>
+          
         </div >
 
     );

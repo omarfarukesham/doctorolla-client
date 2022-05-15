@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react';
 import BookingModal from './BookingModal';
 import Service from './Service';
 
+
 const Allservices = ({ date }) => {
     const [services, setServices] = useState([])
     const [treatment, setTreatment] = useState(null);
-
+    const formateDate = format(date, 'PP')
+//`http://localhost:5000/available?date=${formateDate}` "http://localhost:5000/services"
     useEffect(() => {
-        fetch('http://localhost:5000/services')
+        fetch(`http://localhost:5000/available?date=${formateDate}`)
             .then(res => res.json())
             .then(data => setServices(data))
 
