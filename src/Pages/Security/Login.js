@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init'
 import { useForm } from "react-hook-form";
 import Loading from '../../Shared/Loading';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import useToken from '../../Hooks/useToken';
 
 
 const Login = () => {
@@ -13,7 +14,7 @@ const Login = () => {
     let navigate = useNavigate()
     const location = useLocation()
     const from = location?.state?.from?.pathname || '/'
-
+    const [token] = useToken(user || gUser)
 
     //showing message ui .................................. 
     let signInError;
@@ -27,13 +28,14 @@ const Login = () => {
     }
 
     //user redirect when user is login..................................
-    if(user || gUser){
+    if(token){
         navigate(from, {replace: true})
     }
+  
+   
     
     //google auth hooks singIn code here..........................
     const onSubmit = (data) => {
-
         signInWithEmailAndPassword(data?.email, data?.password);
         // navigate(from, {replace: true})
         

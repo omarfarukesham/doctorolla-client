@@ -3,7 +3,8 @@ import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfil
 import auth from '../firebase.init'
 import { useForm } from "react-hook-form";
 import Loading from './Loading';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import useToken from '../Hooks/useToken';
 
 
 const SignUp = () => {
@@ -12,7 +13,11 @@ const SignUp = () => {
     const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
     const [updateProfile, updating, updateError] = useUpdateProfile(auth);
     let navigate = useNavigate();
-
+    const location = useLocation()
+    const from = location?.state?.from?.pathname || '/'
+    const[token] = useToken(user || gUser);
+    
+    
     //showing message ui .................................. 
     let singUperror;
     if(error || gError || updateError){
@@ -24,11 +29,14 @@ const SignUp = () => {
         return <Loading></Loading>
     }
 
+    if(token){
+        navigate(from, {replace: true})    
+    }
     //google auth hooks singIn code here..........................
     const onSubmit = async(data) => {
         await createUserWithEmailAndPassword(data.email, data.password);
         await updateProfile({ displayName: data.name });
-        navigate('/appointment')
+        // navigate('/appointment')
     }
 
     //Tailwind css, daisy ui, and react form design code ..................
