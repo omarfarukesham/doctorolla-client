@@ -19,6 +19,7 @@ import MyReview from './Pages/Dashboard/MyReview';
 import MyHistory from './Pages/Dashboard/MyHistory';
 import Users from './Pages/Dashboard/Users';
 import RequireAdmin from './Pages/Security/RequireAdmin';
+import AddDoctor from './Pages/Dashboard/AddDoctor';
 
 const App = () => {
   return (
@@ -40,9 +41,10 @@ const App = () => {
 
         }>
           <Route index element={<MyAppointment></MyAppointment>}></Route>
-          <Route path='MyReview' element={<MyReview></MyReview>}></Route>
+          {/* <Route path='MyReview' element={<MyReview></MyReview>}></Route> */}
           <Route path='MyHistory' element={<MyHistory></MyHistory>}></Route>
           <Route path='Users' element={<RequireAdmin><Users></Users></RequireAdmin>}></Route>
+          <Route path='addDoctor' element={<RequireAdmin><AddDoctor></AddDoctor></RequireAdmin>}></Route>
 
         </Route>
         <Route path='/review' element={<Review></Review>}></Route>
