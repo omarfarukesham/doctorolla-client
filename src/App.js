@@ -15,11 +15,11 @@ import ResetPass from './Pages/Security/ResetPass';
 import { ToastContainer } from 'react-toastify';
 import Dashboard from './Pages/Dashboard/Dashboard';
 import MyAppointment from './Pages/Dashboard/MyAppointment';
-import MyReview from './Pages/Dashboard/MyReview';
 import MyHistory from './Pages/Dashboard/MyHistory';
 import Users from './Pages/Dashboard/Users';
 import RequireAdmin from './Pages/Security/RequireAdmin';
 import AddDoctor from './Pages/Dashboard/AddDoctor';
+import ManageDoctors from './Pages/Dashboard/ManageDoctors';
 
 const App = () => {
   return (
@@ -41,10 +41,10 @@ const App = () => {
 
         }>
           <Route index element={<MyAppointment></MyAppointment>}></Route>
-          {/* <Route path='MyReview' element={<MyReview></MyReview>}></Route> */}
           <Route path='MyHistory' element={<MyHistory></MyHistory>}></Route>
           <Route path='Users' element={<RequireAdmin><Users></Users></RequireAdmin>}></Route>
           <Route path='addDoctor' element={<RequireAdmin><AddDoctor></AddDoctor></RequireAdmin>}></Route>
+          <Route path='manageDoctors' element={<RequireAdmin><ManageDoctors></ManageDoctors></RequireAdmin>}></Route>
 
         </Route>
         <Route path='/review' element={<Review></Review>}></Route>
