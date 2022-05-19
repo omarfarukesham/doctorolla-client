@@ -20,6 +20,7 @@ import Users from './Pages/Dashboard/Users';
 import RequireAdmin from './Pages/Security/RequireAdmin';
 import AddDoctor from './Pages/Dashboard/AddDoctor';
 import ManageDoctors from './Pages/Dashboard/ManageDoctors';
+import Payment from './Pages/Dashboard/Payment';
 
 const App = () => {
   return (
@@ -42,12 +43,14 @@ const App = () => {
         }>
           <Route index element={<MyAppointment></MyAppointment>}></Route>
           <Route path='MyHistory' element={<MyHistory></MyHistory>}></Route>
+          <Route path='payment/:id' element={<Payment></Payment>}></Route>
           <Route path='Users' element={<RequireAdmin><Users></Users></RequireAdmin>}></Route>
           <Route path='addDoctor' element={<RequireAdmin><AddDoctor></AddDoctor></RequireAdmin>}></Route>
           <Route path='manageDoctors' element={<RequireAdmin><ManageDoctors></ManageDoctors></RequireAdmin>}></Route>
 
         </Route>
         <Route path='/review' element={<Review></Review>}></Route>
+       
         <Route path='/About' element={<About></About>}></Route>
         <Route path='/contact' element={<Contact></Contact>}></Route>
         <Route path='/login' element={<Login></Login>}></Route>
